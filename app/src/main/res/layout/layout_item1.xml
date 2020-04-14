@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="5dp">
+
+
+    <TextView
+        android:id="@+id/img_avatar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/round_background"
+        android:text="T"
+        android:gravity="center"
+        android:textSize="32sp"/>
+
+    <TextView
+        android:id="@+id/text_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/img_avatar"
+        android:layout_alignTop="@+id/img_avatar"
+        android:text="hello"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:layout_marginLeft="5dp"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/text_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/img_avatar"
+        android:layout_below="@+id/text_name"
+        android:layout_alignBottom="@+id/img_avatar"
+        android:layout_marginLeft="5dp"
+        android:text="abcderfghjklmnop"
+        android:textSize="14dp"/>
+
+    <ImageView
+        android:id="@+id/favourite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_star"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>
