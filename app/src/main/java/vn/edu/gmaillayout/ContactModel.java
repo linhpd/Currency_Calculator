@@ -1,24 +1,22 @@
 package vn.edu.gmaillayout;
 
+import java.util.Random;
+
 public class ContactModel {
     String name;
     String content;
-    boolean isChecked;
-    String color;
+    boolean isFavorite;
+    int color;
+    String time;
 
-    String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public ContactModel(String name, String content, boolean isChecked, String color) {
+    public ContactModel(String name, String content, String time) {
         this.name = name;
         this.content = content;
-        this.isChecked = isChecked;
-        this.color  = color;
+        this.time = time;
+
+        isFavorite = false;
+        Random random = new Random();
+        this.color = random.nextInt();
     }
 
     public String getName() {
@@ -37,11 +35,27 @@ public class ContactModel {
         this.content = content;
     }
 
-    public boolean isChecked() {
-        return isChecked;
+    public boolean isFavorite() {
+        return isFavorite;
     }
 
-    public void setChecked(boolean checked) {
-        isChecked = checked;
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

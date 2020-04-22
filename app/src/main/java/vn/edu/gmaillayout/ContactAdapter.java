@@ -2,6 +2,8 @@ package vn.edu.gmaillayout;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,72 +11,74 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.w3c.dom.Text;
 
 import java.util.List;
 
-public class ContactAdapter extends BaseAdapter {
+public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    List<ContactModel> items;
 
-    public  List<ContactModel> contacts;
+    public ContactAdapter(List<ContactModel> items) {
+        this.items = items;
+    }
+    public void CopyAdapter(List<ContactModel> items){
+        this.items = items;
+        notifyDataSetChanged();
+    }
 
-    public ContactAdapter(List<ContactModel> contacts) {
-        this.contacts = contacts;
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item1, parent,false);
+        return new MyViewHolder(view);
     }
 
     @Override
-    public int getCount() {
-        return contacts.size();
-    }
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        ContactModel item = items.get(position);
+        MyViewHolder viewHolder = (MyViewHolder) holder;
 
-    @Override
-    public Object getItem(int i) {
-        return contacts.get(i);
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(final int i, View view, ViewGroup viewGroup) {
-        ViewHolder viewHolder;
-        if(view == null) {
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_item1, viewGroup, false);
-            viewHolder = new ViewHolder();
-            viewHolder.imageAvatar = view.findViewById(R.id.img_avatar);
-            viewHolder.name = view.findViewById((R.id.text_name));
-            viewHolder.isFavourite = view.findViewById(R.id.favourite);
-            viewHolder.content = view.findViewById((R.id.text_content));
-            view.setTag(viewHolder);
-        }else
-            viewHolder = (ViewHolder) view.getTag();
-
-        final ContactModel contact = contacts.get(i);
-        viewHolder.imageAvatar.setText(contact.getName().substring(0,1));
-        viewHolder.name.setText(contact.getName());
-        viewHolder.content.setText(contact.getContent());
-        viewHolder.imageAvatar.getBackground().setColorFilter(Color.parseColor(contact.getColor()), PorterDuff.Mode.DARKEN);
-        if(!contact.isChecked)
-            viewHolder.isFavourite.setImageResource(R.drawable.ic_star);
-        else
+        viewHolder.textName.setText(item.getName());
+        viewHolder.textAvatar.setText(item.getName().substring(0,1));
+        Drawable background = viewHolder.textAvatar.getBackground();
+        background.setColorFilter(new PorterDuffColorFilter(item.getColor(),PorterDuff.Mode.SRC_ATOP));
+        viewHolder.textContent.setText(item.getContent());
+        viewHolder.textTime.setText(item.getTime());
+        if(item.isFavorite){
             viewHolder.isFavourite.setImageResource(R.drawable.ic_star_favorite);
-
-        viewHolder.isFavourite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean isChecked = contact.isChecked;
-                contact.setChecked(!isChecked);
-                notifyDataSetChanged();
-            }
-        });
-        return view;
+        }else viewHolder.isFavourite.setImageResource(R.drawable.ic_star);
     }
 
-    class ViewHolder {
-        TextView imageAvatar;
-        TextView name;
+    @Override
+    public int getItemCount() {
+        return items.size();
+    }
+    class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView textAvatar;
+        TextView textName;
         ImageView isFavourite;
-        TextView content;
+        TextView textContent;
+        TextView textTime;
+
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+            this.textAvatar = itemView.findViewById(R.id.text_avatar);
+            this.textContent = itemView.findViewById(R.id.text_content);
+            this.textName = itemView.findViewById(R.id.text_name);
+            this.isFavourite = itemView.findViewById(R.id.favourite);
+            this.textTime = itemView.findViewById(R.id.text_time);
+
+            this.isFavourite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    boolean isFavorite = items.get(getAdapterPosition()).isFavorite;
+                    items.get(getAdapterPosition()).setFavorite(!isFavorite);
+                    notifyDataSetChanged();
+                }
+            });
+        }
     }
 }
